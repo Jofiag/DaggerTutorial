@@ -1,4 +1,4 @@
-package com.example.daggertutorial.model.DaggerInjector;
+package com.example.daggertutorial.model.daggerInjector;
 
 import com.example.daggertutorial.MainActivity;
 import com.example.daggertutorial.model.Car;

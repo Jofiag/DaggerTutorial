@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.daggertutorial.model.Car;
-import com.example.daggertutorial.model.DaggerInjector.CarComponent;
-import com.example.daggertutorial.model.DaggerInjector.DaggerCarComponent;
+import com.example.daggertutorial.model.daggerInjector.CarComponent;
+import com.example.daggertutorial.model.daggerInjector.DaggerCarComponent;
 
 import javax.inject.Inject;
 
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     *  That means we have to inform Dagger witch object to create and when it should do it.
     *  One way to do so is by using injection annotation in the object concerned,
     *  but when we don't own the object it's not possible because we cannot add code in the object we don not own.
+    *  Another way is to use module and provider methods, that is useful when we don not own the object we want Dagger to provide.
     * */
 
     @Override
