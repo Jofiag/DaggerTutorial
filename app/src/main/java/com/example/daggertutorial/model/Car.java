@@ -21,7 +21,7 @@ public class Car {
     /*
      *   To use Dagger method injection we have to add @Inject annotation to the method and it's parameters constructor so that it create it.
      *   Here the method we use is in the model Car, that means whenever an instance (of a Car created by Dagger) is called, the method used is executed by Dagger.
-     *   IMPORTANT: methods injected with Dagger are only executed if we used constructor injection of the method class.
+     *   IMPORTANT: methods injected with Dagger are only executed if we used constructor injection of the method class. Also we don't do method injection in activities.
      * */
 
     /////   Notice that the order of Dagger execution in a class is constructor, field(attribute), method.
