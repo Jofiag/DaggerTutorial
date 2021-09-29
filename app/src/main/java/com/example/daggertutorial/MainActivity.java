@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
                 car2.drive();
 
         ///////////////////// METHOD INJECTION /////////////////////
+            /*
+            *   To use Dagger method injection we have to add @Inject annotation to the method and it's parameters constructor so that it create it.
+            *   Here the method we use is in the model Car, that means whenever an instance (of a Car created by Dagger) is called, the method used is executed by Dagger.
+            * */
 
 
     }
