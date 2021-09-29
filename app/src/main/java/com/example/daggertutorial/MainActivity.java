@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Here is the case where we own the objects we want Dagger to provide, so we can write code in them
         daggerInjection();
+
+        //Here is the case where we do not own the object we want Dagger to provide.
+        modulesAndProviderMethods();
     }
 
     private void daggerInjection(){
@@ -62,5 +65,18 @@ public class MainActivity extends AppCompatActivity {
          * */
 
         /////   Notice that the order of Dagger execution in a class is constructor, field(attribute), method.
+    }
+
+    private void modulesAndProviderMethods(){
+        /*
+        *   When we do not have access to the object we want Dagger to provide we use modules and provider methods.
+        *   For the module part, we create a CarSeatModule class that will correspond to the CarSeat object we don't own.
+        *   After that we add @Module annotation to that class.
+        *   Then we create one public method for each attribute of CarSeatModule, those methods must return it's attribute and have the @Provide annotation.
+        *   Now we create a public method for CarSeat, that method must return CarSeat and have for parameters the CarSeat attributes (for witch we created provide method earlier)
+        *   And in the Injector interface we have to add next to @Component annotation this : (modules = CarSeatModule.class),
+        *   so whenever a method of that interface is called dagger knows that he have to use CarSeatModule class to provide CarSeat object.
+        *
+        * */
     }
 }

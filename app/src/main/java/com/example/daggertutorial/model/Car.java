@@ -9,11 +9,13 @@ public class Car {
 
     private Engine engine;
     private Wheels wheels;
+    private CarSeat carSeat;
 
     @Inject
-    public Car(Engine engine, Wheels wheels) {
+    public Car(Engine engine, Wheels wheels, CarSeat carSeat) {
         this.engine = engine;
         this.wheels = wheels;
+        this.carSeat = carSeat;
     }
 
 
