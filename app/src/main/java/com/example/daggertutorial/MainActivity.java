@@ -19,8 +19,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ///////////////////// FIELD INJECTION  (TWO METHODS) /////////////////////
 
-        /*
+        /// METHOD 1
+        /*  Method 1 :
         *   With Dagger we don't need to initialize our Car instant object with it attributes, because it Dagger creates all the attributes needed for us.
         *   To allow Dagger to do so we have to create the Injector interface that is going to initialize our Car instant here.
         *   And we also have to add the annotation required to Car constructor and it's attributes' constructor.
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         car = carComponent.getCar();
         car.drive();
 
+        /// METHOD 2
         /*
         *   A second method to create a car using Dagger is to add the @Inject annotation when declaring the attribute,
         *   but you should not use private while doing so because Dagger need to access the variable.
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         *   that methode must have the activity where you're going to create the Car as parameter(MainActivity here).
         *   Then you can call that method and pass the activity, so that Dagger do the job.
         * */
-        carComponent.inject(this);
+        carComponent.injectInMainActivity(this);
         car2.drive();
 
     }

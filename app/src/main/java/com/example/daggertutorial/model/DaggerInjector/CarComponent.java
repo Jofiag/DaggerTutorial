@@ -18,5 +18,6 @@ public interface CarComponent {
 
     //For the second method : using the @Inject annotation on the declaration of Car attribute in the MainActivity.
     //Notice that here the parameter has to be MainActivity, if we put Activity or other context type it won't work.
-    void inject(MainActivity mainActivity);
+    //So if we want to create a Car attribute in other activity, we are have to create another method with the specific activity in parameter (one method for each activity).
+    void injectInMainActivity(MainActivity mainActivity);
 }
