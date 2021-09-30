@@ -1,4 +1,4 @@
-package com.example.daggertutorial.model.daggerModule;
+package com.example.daggertutorial.dagger.module;
 
 import com.example.daggertutorial.model.CarSeat;
 import com.example.daggertutorial.model.SewingLine;

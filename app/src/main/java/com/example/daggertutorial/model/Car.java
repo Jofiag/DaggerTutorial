@@ -10,12 +10,14 @@ public class Car {
     private Engine engine;
     private Wheels wheels;
     private CarSeat carSeat;
+    private CarBody carBody;
 
     @Inject
-    public Car(Engine engine, Wheels wheels, CarSeat carSeat) {
+    public Car(Engine engine, Wheels wheels, CarSeat carSeat, CarBody carBody) {
         this.engine = engine;
         this.wheels = wheels;
         this.carSeat = carSeat;
+        this.carBody = carBody;
     }
 
 
@@ -38,6 +40,7 @@ public class Car {
     }
 
     public void drive(){
+        carBody.protectDriver();
         Log.d(TAG, "driving: ");
     }
 }

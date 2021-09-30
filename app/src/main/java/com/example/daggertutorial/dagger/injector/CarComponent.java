@@ -1,8 +1,9 @@
-package com.example.daggertutorial.model.daggerInjector;
+package com.example.daggertutorial.dagger.injector;
 
 import com.example.daggertutorial.MainActivity;
 import com.example.daggertutorial.model.Car;
-import com.example.daggertutorial.model.daggerModule.CarSeatModule;
+import com.example.daggertutorial.dagger.module.CarSeatModule;
+import com.example.daggertutorial.dagger.module.NormalBodyModule;
 
 import dagger.Component;
 
@@ -12,7 +13,7 @@ import dagger.Component;
 *   we have to add @Inject annotation to the Car constructor and to the constructor of all Car's attributes.
 * */
 
-@Component(modules = CarSeatModule.class)
+@Component(modules = {CarSeatModule.class, NormalBodyModule.class /*CarbonFiberBodyModule.class*/})
 public interface CarComponent {
     //For the first method : without using the @Inject annotation on the declaration of Car attribute in the MainActivity
     Car getCar();
