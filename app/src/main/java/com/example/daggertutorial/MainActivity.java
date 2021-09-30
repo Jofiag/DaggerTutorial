@@ -32,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Here is the case where we do not own the object we want Dagger to provide.
         modulesAndProviderMethods();
+
+        //Here is how we provide interface using Dagger
+        providingInterface();
     }
 
     private void daggerInjection(){
@@ -80,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         * */
     }
 
-    private void providingInterfaceWithBind(){
+    private void providingInterface(){
         ///////////////////// INTERFACE PROVIDING /////////////////////
         /*  To allow Dagger to provide interface we have to :
         *
