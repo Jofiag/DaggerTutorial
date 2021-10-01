@@ -1,13 +1,12 @@
 package com.example.daggertutorial;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-import com.example.daggertutorial.dagger.module.CarbonFiberBodyModule;
-import com.example.daggertutorial.model.Car;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.daggertutorial.dagger.injector.CarComponent;
 import com.example.daggertutorial.dagger.injector.DaggerCarComponent;
+import com.example.daggertutorial.model.Car;
 
 import javax.inject.Inject;
 
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         * (In our case here, we are going to use one of our interface provider CarbonFiberBody, so we are going to use there module as well)
         * (We are going to use only one value here that is an integer : protectionPower. Notice that you can use as many values as you need)
         *
-        *   1) Add the protectionPower as an attribute to the class (CarbonFiberBody).
+        *   1) Add the protectionPower as an attribute to the interface provider (CarbonFiberBody).
         *
         *   2) Remove the @Inject annotation on the constructor of CarbonFiberBody, because we want to pass a value when instantiating the object,
         *      so we don't need Dagger to provide us the constructor anymore.
@@ -156,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         *
         *   7) Add a getter for protectionPower, the getter is a @Provide method. These way we can use protectionPower whenever we need it.
         *      If we add the @Provides getter method we can keep the @Provides getter method parameter witch is here CarbonFiberBody; and just return that parameter.
+        *      (Remember the step 6, we remove the parameter)
         *      But make sure you didn't forget to add @Inject annotation to the constructor of the interface provider concerned (CarbonFiberBody here).
         *
         *   8) Make sure the module used (here it's CarbonFiberBodyModule is declared in the annotation of the injector interface) like this:
@@ -165,10 +165,68 @@ public class MainActivity extends AppCompatActivity {
         *               .carbonFiberBodyModule(new CarbonFiberBodyModule(100))
         *               .build();
         *
+        *   9) Another method to build the object and inject the value at runtime (For this method we're going to use our second interface provider NormalBody.class):
+        *       a) add your value as an attribute of the interface provider NormalBody, the value here is protectionPower
+        *       b) add that attribute to the constructor
+        *       c) define manually the builder of the injector interface :
+        *           @Component.Builder
+        *           interface Builder{
+        *               @BuildsInstance
+         *              Builder protectionPower(int protectionPower);
+         *
+        *               CarComponent build();
+        *           }
+        *       d) when doing so, we have to implement the prototype of all the build method : CarComponent build();
+        *       e) also in Builder interface, we implement the prototype of the method that will inject the value at runtime:
+        *           @BuildsInstance
+        *           Builder protectionPower(int protectionPower);
+        *       f) now make sure that the right module is declare in the annotation of the injector interface : @Component(modules = {..., NormalBodyModule.class}),
+        *          remember there shouldn't be more than one module of the same interface inside that annotation, otherwise it won't work.
+        *       g) finally in the activity you can build :
+        *          CarComponent carComponent = DaggerCarComponent.builder()
+        *               .protectionPower(50)
+        *               .build();
+        *       By using this method the module doesn't need to have the values as attribute, neither it's @Provides getter method and nor the module constructor.
+        *
+        *    10) Using second method, but this time with multiple values to inject at runtime:
+        *       a) add the second value as an attribute to NormalBody and add it to the constructor
+        *       b) in the Build interface add another method prototype that will inject the value,
+        *          but this time with @Named("name of the value") annotation just before the declaration of the value in the parentheses
+        *          and for the method of other values as well.
+        *          Add the same annotation in the constructor of interface provide NormalBody:
+        *          @Component.Builder
+        *          interface Builder{
+        *
+        *               @BuildsInstance
+        *               Builder protectionPower(@Named("protection power")int protectionPower);
+        *
+        *               @BuildsInstance
+        *               Builder protectionPower(@Named("ground proximity")int groundProximity);
+        *
+        *               CarComponent build();
+        *          }
+        *
+        *          @Inject
+        *          public NormalBody(@Named("protection power") int protectionPower,
+        *                            @Named("ground proximity") int groundProximity) {
+        *
+        *            this.protectionPower = protectionPower;
+        *            this.groundProximity = groundProximity;
+        *           }
+        *
+        *           Notice : If you don't add the add annotation, dagger won't know when to use values with the same type and send you an error.
+        *
+        *
         *
         * */
+
+//        CarComponent carComponent = DaggerCarComponent.builder()
+//                .carbonFiberBodyModule(new CarbonFiberBodyModule(100))
+//                .build();
+
         CarComponent carComponent = DaggerCarComponent.builder()
-                .carbonFiberBodyModule(new CarbonFiberBodyModule(100))
+                .protectionPower(50)
+                .groundProximity(2)
                 .build();
 
         car = carComponent.getCar();
