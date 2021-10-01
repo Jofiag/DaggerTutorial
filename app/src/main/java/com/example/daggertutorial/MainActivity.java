@@ -154,7 +154,9 @@ public class MainActivity extends AppCompatActivity {
         *           c) create a provideContext method that return the context attribute created above (don't forget that method must have @Provide annotation),
         *           d) now you can instantiate it in whatever activity you want.
         *
-        *   7) Make sure the module used (here it's CarbonFiberBodyModule is declared in the annotation of the injector interface) like this:
+        *   7) Add a getter for protectionPower, the getter is a @Provide method. These way we can use protectionPower whenever we need it.
+        *
+        *   8) Make sure the module used (here it's CarbonFiberBodyModule is declared in the annotation of the injector interface) like this:
         *      @Component(modules = {..., CarbonFiberBodyModule.class})
         *      Build the object in the activity :
         *           CarComponent carComponent = DaggerCarComponent.builder()
