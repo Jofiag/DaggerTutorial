@@ -9,9 +9,15 @@ import dagger.Provides;
 @Module
 public class CarbonFiberBodyModule {
 
+    private int protectionPower;
+
+    public CarbonFiberBodyModule(int protectionPower) {
+        this.protectionPower = protectionPower;
+    }
+
     @Provides
-    CarBody provideCarbonFiberBody(CarbonFiberBody carbonFiberBody){
-        return carbonFiberBody;
+    CarBody provideCarbonFiberBody(){
+        return new CarbonFiberBody(this.protectionPower);
     }
 }
 

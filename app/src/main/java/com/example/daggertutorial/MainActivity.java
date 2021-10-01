@@ -4,9 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.daggertutorial.dagger.module.CarbonFiberBodyModule;
 import com.example.daggertutorial.model.Car;
 import com.example.daggertutorial.dagger.injector.CarComponent;
-import com.example.daggertutorial.dagger.daggerInjector.DaggerCarComponent;
+import com.example.daggertutorial.dagger.injector.DaggerCarComponent;
 
 import javax.inject.Inject;
 
@@ -35,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Here is how we provide interface using Dagger
         providingInterface();
+
+        //Here is how we allow injecting value to Dagger at runtime when using Dagger interface provider
+        injectValuesAtRuntimeForInterfaceProvider();
     }
 
     private void daggerInjection(){
@@ -47,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         //   Because we added the annotation required and compile the project successfully,
         //   Dagger created DaggerCarComponent knowing that CarComponent is the Injector interface.
         //   Then we can use that injector to get our car created by Dagger.
-        CarComponent carComponent = DaggerCarComponent.create();
-        car = carComponent.getCar();
-        car.drive();
+//        CarComponent carComponent = DaggerCarComponent.create();
+//        car = carComponent.getCar();
+//        car.drive();
 
         /// METHOD 2
         //  A second method to create a car using Dagger is to add the @Inject annotation when declaring the attribute,
@@ -57,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
         //  And you have de declare a void method in the Injector interface,
         //  that methode must have the activity where you're going to create the Car as parameter(MainActivity here).
         //  Then you can call that method and pass the activity, so that Dagger do the job.
-        carComponent.injectInMainActivity(this);
-        car2.drive();
+//        CarComponent carComponent = DaggerCarComponent.create();
+//        carComponent.injectInMainActivity(this);
+//        car2.drive();
 
         ///////////////////// METHOD INJECTION /////////////////////
         /*
@@ -116,5 +121,56 @@ public class MainActivity extends AppCompatActivity {
         *
         * */
 
+    }
+
+    private void injectValuesAtRuntimeForInterfaceProvider(){
+        /*
+        * Some times we need to inject values (any variable or object created) to an object when instantiating that object. This is in the case of interface providing.
+        * When using Dagger this is how to do:
+        * (In our case here, we are going to use one of our interface provider CarbonFiberBody, so we are going to use there module as well)
+        * (We are going to use only one value here that is an integer : protectionPower. Notice that you can use as many values as you need)
+        *
+        *   1) Add the protectionPower as an attribute to the class (CarbonFiberBody).
+        *
+        *   2) Remove the @Inject annotation on the constructor of CarbonFiberBody, because we want to pass a value when instantiating the object,
+        *      so we don't need Dagger to provide us the constructor anymore.
+        *
+        *   3) Add protectionPower as a parameter of the constructor and set the attribute with the parameter:
+        *      public CarbonFiberBody(int protectionPower) {
+        *           this.protectionPower = protectionPower;
+        *       }
+        *       Here after that we append the protectionPower inside the interface override method to check if it will work after the instantiation.
+        *
+        *   4) Go to the module of the class : CarbonFiberBodyModule. Replace @Binds by @Provide on the method witch return CarBody and remove the abstract from the class.
+        *      Of course if you didn't use @Binds just keep the @Provide, or if you don't have that method create it with the @Provide annotation.
+        *      In our case it is the provideCarbonFiberBody method.
+        *
+        *   5) Add protectionPower as an attribute to the module CarbonFiberModule and generate the constructor with that attribute.
+        *
+        *   6) Remove the CarbonFiberBody parameter of provideCarbonFiberBody. Add "return new CarbonFiberBody(this.protectionPower)" to the method body.
+        *      If you want to use it in more than one activity, you should:
+        *           a) add Context attribute to CarbonFiberBody,
+        *           b) update the constructor with the context attribute,
+        *           c) create a provideContext method that return the context attribute created above (don't forget that method must have @Provide annotation),
+        *           d) now you can instantiate it in whatever activity you want.
+        *
+        *   7) Make sure the module used (here it's CarbonFiberBodyModule is declared in the annotation of the injector interface) like this:
+        *      @Component(modules = {..., CarbonFiberBodyModule.class})
+        *      Build the object in the activity :
+        *           CarComponent carComponent = DaggerCarComponent.builder()
+        *               .carbonFiberBodyModule(new CarbonFiberBodyModule(100))
+        *               .build();
+        *
+        *
+        * */
+        CarComponent carComponent = DaggerCarComponent.builder()
+                .carbonFiberBodyModule(new CarbonFiberBodyModule(100))
+                .build();
+
+        car = carComponent.getCar();
+        car.drive();
+
+        carComponent.injectInMainActivity(MainActivity.this);
+        car2.drive();
     }
 }

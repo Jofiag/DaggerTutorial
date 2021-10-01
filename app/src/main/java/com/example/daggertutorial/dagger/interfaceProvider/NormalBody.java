@@ -9,6 +9,8 @@ import javax.inject.Inject;
 public class NormalBody implements CarBody {
     private static final String TAG = "CAR";
 
+    private int protectionPower;
+
     @Inject
     public NormalBody() {
     }

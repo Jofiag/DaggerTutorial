@@ -10,12 +10,14 @@ public class CarbonFiberBody implements CarBody {
 
     private static final String TAG = "CAR";
 
-    @Inject
-    public CarbonFiberBody() {
+    private int protectionPower;
+
+    public CarbonFiberBody(int protectionPower) {
+        this.protectionPower = protectionPower;
     }
 
     @Override
     public void protectDriver() {
-        Log.d(TAG, "Carbon Fiber Protection Activated");
+        Log.d(TAG, "Carbon Fiber Protection Activated. Protection Power : " + protectionPower);
     }
 }
