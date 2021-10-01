@@ -155,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
         *           d) now you can instantiate it in whatever activity you want.
         *
         *   7) Add a getter for protectionPower, the getter is a @Provide method. These way we can use protectionPower whenever we need it.
+        *      If we add the @Provides getter method we can keep the @Provides getter method parameter witch is here CarbonFiberBody; and just return that parameter.
+        *      But make sure you didn't forget to add @Inject annotation to the constructor of the interface provider concerned (CarbonFiberBody here).
         *
         *   8) Make sure the module used (here it's CarbonFiberBodyModule is declared in the annotation of the injector interface) like this:
         *      @Component(modules = {..., CarbonFiberBodyModule.class})

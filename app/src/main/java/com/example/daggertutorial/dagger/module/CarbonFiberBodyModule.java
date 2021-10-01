@@ -21,8 +21,8 @@ public class CarbonFiberBodyModule {
     }
 
     @Provides
-    public CarBody provideCarbonFiberBody(){
-        return new CarbonFiberBody(this.protectionPower);
+    public CarBody provideCarbonFiberBody(CarbonFiberBody carbonFiberBody){
+        return carbonFiberBody;
     }
 }
 
