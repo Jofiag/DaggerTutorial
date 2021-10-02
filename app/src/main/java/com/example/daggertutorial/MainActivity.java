@@ -216,6 +216,8 @@ public class MainActivity extends AppCompatActivity {
         *
         *           Notice : If you don't add the add annotation, dagger won't know when to use values with the same type and send you an error.
         *
+        *           If you want to use the first method, make sure you remove the Build interface and declare the right module in the annotation of the inject interface.
+        *
         *
         *
         * */
