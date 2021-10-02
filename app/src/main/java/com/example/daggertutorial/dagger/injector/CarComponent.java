@@ -6,6 +6,7 @@ import com.example.daggertutorial.dagger.module.NormalBodyModule;
 import com.example.daggertutorial.model.Car;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
@@ -15,7 +16,7 @@ import dagger.Component;
 *   In order for dagger to know and create at runtime the Car component in our case,
 *   we have to add @Inject annotation to the Car constructor and to the constructor of all Car's attributes.
 * */
-
+@Singleton
 @Component(modules = {CarSeatModule.class, NormalBodyModule.class /*,CarbonFiberBodyModule.class*/})
 public interface CarComponent {
     //For the first method : without using the @Inject annotation on the declaration of Car attribute in the MainActivity

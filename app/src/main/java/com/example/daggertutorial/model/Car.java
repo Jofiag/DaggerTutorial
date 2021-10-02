@@ -7,18 +7,21 @@ import javax.inject.Inject;
 public class Car {
     private static final String TAG = "Car";
 
+    private Driver driver;
     private Engine engine;
     private Wheels wheels;
     private CarSeat carSeat;
     private CarBody carBody;
 
     @Inject
-    public Car(Engine engine, Wheels wheels, CarSeat carSeat, CarBody carBody) {
+    public Car(Driver driver, Engine engine, Wheels wheels, CarSeat carSeat, CarBody carBody) {
+        this.driver = driver;
         this.engine = engine;
         this.wheels = wheels;
         this.carSeat = carSeat;
         this.carBody = carBody;
     }
+
 
 
     ///////////////////// METHOD INJECTION /////////////////////
@@ -41,6 +44,10 @@ public class Car {
 
     public void drive(){
         carBody.protectDriver();
-        Log.d(TAG, "driving: ");
+        Log.d(TAG, driver + "driving: " + Car.this);
+    }
+
+    public Engine getEngine() {
+        return engine;
     }
 }

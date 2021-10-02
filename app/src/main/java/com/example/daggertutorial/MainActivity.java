@@ -1,18 +1,20 @@
 package com.example.daggertutorial;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.daggertutorial.dagger.injector.CarComponent;
 import com.example.daggertutorial.dagger.injector.DaggerCarComponent;
 import com.example.daggertutorial.model.Car;
+import com.example.daggertutorial.model.Engine;
 
 import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
     private Car car;
-    @Inject Car car2;
+    @Inject Car car2, car3;
 
     /*
     *  The purpose of Dagger is to create object and provide them at the right time.
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Here is how we allow injecting value to Dagger at runtime when using Dagger interface provider
         injectValuesAtRuntimeForInterfaceProvider();
+
+        //Here is how to have only once instance of an object at runtime
+        singleton();
     }
 
     private void daggerInjection(){
@@ -222,19 +227,53 @@ public class MainActivity extends AppCompatActivity {
         *
         * */
 
+        // First method to inject value at runtime
 //        CarComponent carComponent = DaggerCarComponent.builder()
 //                .carbonFiberBodyModule(new CarbonFiberBodyModule(100))
 //                .build();
+
+        // Second method to inject value at runtime
+//        CarComponent carComponent = DaggerCarComponent.builder()
+//                .protectionPower(50)
+//                .groundProximity(2)
+//                .build();
+//
+//        car = carComponent.getCar();
+//        car.drive();
+//
+//        carComponent.injectInMainActivity(MainActivity.this);
+//        car2.drive();
+    }
+
+    private void singleton(){
+        /*
+        *   When we annotate an object with @Singleton using dagger, we are telling dagger that we want to use only one instance of that object
+        *   within an instance of the injector interface.
+        *   So if we have two instance of the component : component1 and component2, the singleton object will always have only one instance in each component;
+        *   but the singleton object of component1 has a different instance of the one in component2.
+        *   To make an object a singleton in dagger, we have to:
+        *       1) Add @Singleton annotation on the class, and don't forget the @Inject annotation on it's constructor
+        *       2) Add @Singleton annotation on the interface injector (CarComponent here)
+        *
+        * */
 
         CarComponent carComponent = DaggerCarComponent.builder()
                 .protectionPower(50)
                 .groundProximity(2)
                 .build();
 
-        car = carComponent.getCar();
-        car.drive();
+        CarComponent carComponent2 = DaggerCarComponent.builder()
+                .protectionPower(50)
+                .groundProximity(2)
+                .build();
 
+        //car2 and car3 have the same driver because driver is a singleton and both car are from the same component.
         carComponent.injectInMainActivity(MainActivity.this);
         car2.drive();
+        car3.drive();
+
+        //the address of the driver (the singleton) in carComponent is different of the one in carComponent2
+        carComponent.getCar().drive();
+        carComponent2.getCar().drive();
     }
 }
